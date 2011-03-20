@@ -1,5 +1,7 @@
 # ql\_canvas()
 
+v0.0.1
+
 A simple loading script for creating and manipulating canvas elements.
 
 ## Usage
@@ -75,7 +77,7 @@ Here's a sample options object:
 
 `resize( width, height )`
 
-* a helper method that resizes the canvas
+* resizes the canvas
 
 `$`
 
@@ -91,11 +93,11 @@ Here's a sample options object:
 
 ## requestAnimFrame()
 
-Paul Irish's shim for window.requestAnimationFrame is included. It
-offer's a more modern interface than setInterval or setTimeout and is on
+Paul Irish's shim for `window.requestAnimationFrame` is included. It
+offers a more modern way of looping animations than setInterval or setTimeout, and its on
 its way to being widely supported. The shim re-maps the method to a
 slightly different namespace and provides a fallback to setTimeout when
-not supported. Peep 'example/script.js' for more info on how to use it,
+not supported. Peep `example/script.js` for more info on how to use it,
 and be sure to read [Paul's blog post][1].
 
 ### License

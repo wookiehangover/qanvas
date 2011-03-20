@@ -18,7 +18,7 @@ window.requestAnimFrame = (function(){
 window.ql_canvas = function(options){
 
   var settings = $.extend({}, ql_canvas.defaultOptions, options),
-      cavnas, ctx, $canvas, initialize;
+      cavnas, ctx, $canvas;
 
   $canvas = $('<canvas/>', {
               id: settings.name,
@@ -51,15 +51,15 @@ window.ql_canvas = function(options){
 
     'chain': chain(),
 
-    'clear': function( width, height){
-      ctx.clearRect(0,0, width || settings.width, height || settings.height);
-    },
-
     '$': $canvas,
 
     'ctx': ctx,
 
     'settings': settings,
+
+    'clear': function( width, height){
+      ctx.clearRect(0,0, width || settings.width, height || settings.height);
+    },
 
     'resize': function(width, height, callback){
       canvas.width = this.settings.width = width || settings.width;
@@ -67,9 +67,7 @@ window.ql_canvas = function(options){
 
       if( $.isFunction( callback )) callback.call(this, ctx, $canvas, settings);
     }
-
   };
-
 };
 
 ql_canvas.defaultOptions = {
@@ -80,6 +78,5 @@ ql_canvas.defaultOptions = {
   style: false,
   init: false
 };
-
 
 })(jQuery);

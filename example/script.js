@@ -38,18 +38,20 @@ $(function(){
 
   my_canvas.init();
 
-  (function animate() {
-      if( pause ) return;
+  function animate() {
+    if( pause ) return;
 
-      var delayTime = timeout.val();
+    var delayTime = timeout.val();
 
-      my_canvas.init();
+    my_canvas.init();
 
-      if (delayTime)
-        return setTimeout( function(){ requestAnimFrame( animate ); }, delayTime);
+    if (delayTime)
+      return setTimeout( function(){ requestAnimFrame( animate ); }, delayTime);
 
-      requestAnimFrame( animate );
-  })();
+    requestAnimFrame( animate );
+  }
+
+  animate();
 
   $(window).resize(function(){
     my_canvas.resize( $(window).width(), $(window).height() );

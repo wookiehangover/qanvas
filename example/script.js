@@ -3,6 +3,8 @@
 */
 
 $(function(){
+  var pause = false,
+      timeout = $("#timeout");
 
   window.my_canvas = ql_canvas({
     width: $(window).width(),
@@ -12,7 +14,7 @@ $(function(){
       var red, blue, green,
 
           x = $('#size').val(),
-          y = $('#size').val(),
+          y = x,
 
           width = settings.width / x,
           height = settings.height / y,
@@ -28,45 +30,42 @@ $(function(){
           green = ~~(255 - x_color * (Math.random() * j));
 
           ctx.fillStyle = 'rgb('+ red +','+ blue +','+ green +')';
-          ctx.fillRect( i * x, j * y, x,y);
+          ctx.fillRect( i * x, j * y, x, y);
         }
       }
     }
-
   });
 
   my_canvas.init();
 
-  function animate() {
+  (function animate() {
+      if( pause ) return;
+
+      var delayTime = timeout.val();
+
       my_canvas.init();
-      my_canvas.timer = setTimeout( animate, $('#timeout').val());
-  }
 
-  function draw() {
-      var time = new Date().getTime() * 0.002;
-      var x = Math.sin( time ) * 256 + ( my_canvas.settings.width / 2) ;
-      var y = Math.cos( time * 0.9 ) * 256 + 512;
+      if (delayTime)
+        return setTimeout( function(){ requestAnimFrame( animate ); }, delayTime);
 
-      my_canvas.ctx.fillStyle = 'rgb(255,0,0)';
-      my_canvas.ctx.beginPath();
-      my_canvas.ctx.arc( x, y, 10, 0, Math.PI * 2, true );
-      my_canvas.ctx.closePath();
-      my_canvas.ctx.stroke();
-  }
+      requestAnimFrame( animate );
+  })();
 
-  my_canvas.chain(animate);
+  $(window).resize(function(){
+    my_canvas.resize( $(window).width(), $(window).height() );
+  });
 
   $('#pause').click(function(e){
     e.preventDefault();
     var $this = $(this);
 
-    clearTimeout(my_canvas.timer);
+    pause = !pause;
 
     if( $this.text() == "Stop" ){
       $this.text('Start');
     } else {
       $this.text('Stop');
-      my_canvas.chain(animate);
+      requestAnimFrame( animate );
     }
   });
 

@@ -41,7 +41,7 @@ window.ql_canvas = function(options){
           length = args.length;
 
       for( var i = 0; i < args.length; i += 1 ){
-        if( $.isFunction( args[i] ) === true) args[i].call(null, ctx, canvas, settings);
+        if( $.isFunction( args[i] ) === true) args[i].call(this, ctx, $canvas, settings);
       }
     };
   }
@@ -59,7 +59,14 @@ window.ql_canvas = function(options){
 
     'ctx': ctx,
 
-    'settings': settings
+    'settings': settings,
+
+    'resize': function(width, height, callback){
+      canvas.width = this.settings.width = width || settings.width;
+      canvas.height = this.settings.height = height || settings.height;
+
+      if( $.isFunction( callback )) callback.call(this, ctx, $canvas, settings);
+    }
 
   };
 

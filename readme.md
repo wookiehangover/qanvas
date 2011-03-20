@@ -69,9 +69,13 @@ Here's a sample options object:
 * a function that creates callback chains with the same arguments as
   the init function.
 
-`clear( x, y)`
+`clear( x, y )`
 
 * clears the entire canvas based on passed in or default width and height
+
+`resize( width, height )`
+
+* a helper method that resizes the canvas
 
 `$`
 
@@ -85,6 +89,17 @@ Here's a sample options object:
 
 * the settings hash
 
+## requestAnimFrame()
+
+Paul Irish's shim for window.requestAnimationFrame is included. It
+offer's a more modern interface than setInterval or setTimeout and is on
+its way to being widely supported. The shim re-maps the method to a
+slightly different namespace and provides a fallback to setTimeout when
+not supported. Peep 'example/script.js' for more info on how to use it,
+and be sure to read [Paul's blog post][1].
+
 ### License
 
 It's MIT, yo
+
+[1]: http://paulirish.com/2011/requestanimationframe-for-smart-animating/

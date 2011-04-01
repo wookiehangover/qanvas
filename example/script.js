@@ -10,8 +10,10 @@ $(function(){
     width: $(window).width(),
     height: $(window).height(),
     style: "float:left; position:fixed; top:0; left:0; z-index:-10;",
-    init: function canvasInit(ctx, $canvas, settings) {
+    init: function( ctx, $canvas, settings ) {
       var red, blue, green,
+
+          toggle = $('input[name="toggle"]:radio').attr("checked"),
 
           x = $('#size').val(),
           y = x,
@@ -20,19 +22,42 @@ $(function(){
           height = settings.height / y,
 
           x_color = 255 / width,
-          y_color = 255 / height;
+          y_color = 255 / height,
 
-      for(var i = 0; i < width; i += 1 ){
-        for(var j = 0; j < height; j += 1 ){
+          seconds = new Date().getTime() * 0.002;
 
-          red = ~~(255 - x_color * i);
-          blue = ~~(255 - y_color * j);
-          green = ~~(255 - x_color * (Math.random() * j));
+      if( toggle ){
 
-          ctx.fillStyle = 'rgb('+ red +','+ blue +','+ green +')';
-          ctx.fillRect( i * x, j * y, x, y);
+        for(var i = 0; i < width; i += 1 ){
+          for(var j = 0; j < height; j += 1 ){
+
+            red = ~~(255 - x_color * i);
+            blue = ~~(255 - y_color * j);
+            green = ~~(255 - x_color * (Math.random() * j));
+
+            ctx.fillStyle = 'rgb('+ red +','+ blue +','+ green +')';
+            ctx.fillRect( i * x, j * y, x, y);
+          }
         }
+
+      } else {
+
+        for(var i = 0; i < width; i += 1 ){
+          for(var j = 0; j < height; j += 1 ){
+            var offset = (Math.sin(seconds) * 100 + 255);
+
+            red = offset - (x_color * i) ;
+            green = offset - (y_color * j) ;
+            blue = 100 - (y_color * j);
+            //blue = ~~( 255 - x_color * (Math.random() * j));
+
+            ctx.fillStyle = 'rgb('+ ~~red +','+ ~~green +','+ ~~blue +')';
+            ctx.fillRect( i * x, j * y, x, y);
+          }
+        }
+
       }
+
     }
   });
 
@@ -45,7 +70,7 @@ $(function(){
 
     my_canvas.init();
 
-    if (delayTime)
+    if( delayTime )
       return setTimeout( function(){ requestAnimFrame( animate ); }, delayTime);
 
     requestAnimFrame( animate );

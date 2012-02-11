@@ -1,16 +1,25 @@
-/* Author: Sam Breed for Quick Left 2011
-
-*/
-
 $(function(){
   var pause = false,
-      timeout = $("#timeout");
+      timeout = $("#timeout"),
+      tilt = { x: 0, y: 0 };
 
-  window.my_canvas = ql_canvas({
+  window.addEventListener("deviceorientation", function(e) {
+
+    tilt.x = Math.abs(e.beta * 8) + 50;
+    tilt.y = Math.abs(e.gamma * 12);
+
+  }, true);
+
+  var q = new Qanvas({
     width: $(window).width(),
     height: $(window).height(),
     style: "float:left; position:fixed; top:0; left:0; z-index:-10;",
-    init: function( ctx, $canvas, settings ) {
+    render: function() {
+
+      var ctx = this.ctx;
+      var $canvas = this.$canvas;
+      var settings = this.settings;
+
       var red, blue, green,
 
           toggle = $('input[name="toggle"]:radio').attr("checked"),
@@ -31,8 +40,8 @@ $(function(){
         for(var i = 0; i < width; i += 1 ){
           for(var j = 0; j < height; j += 1 ){
 
-            red = ~~(255 - x_color * i);
-            blue = ~~(255 - y_color * j);
+            red = ~~(255 - tilt.x - x_color * i);
+            blue = ~~(255 - tilt.y - y_color * j);
             green = ~~(255 - x_color * (Math.random() * j));
 
             ctx.fillStyle = 'rgb('+ red +','+ blue +','+ green +')';
@@ -61,14 +70,12 @@ $(function(){
     }
   });
 
-  my_canvas.init();
-
   function animate() {
     if( pause ) return;
 
     var delayTime = timeout.val();
 
-    my_canvas.init();
+    q.render();
 
     if( delayTime )
       return setTimeout( function(){ requestAnimFrame( animate ); }, delayTime);
@@ -79,7 +86,7 @@ $(function(){
   animate();
 
   $(window).resize(function(){
-    my_canvas.resize( $(window).width(), $(window).height() );
+    q.resize( $(window).width(), $(window).height() );
   });
 
   $('#pause').click(function(e){

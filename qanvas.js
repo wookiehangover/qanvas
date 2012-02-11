@@ -65,6 +65,7 @@ Qanvas.prototype.resize = function( width, height, callback ){
   this.canvas.width = this.settings.width = width || this.settings.width;
   this.canvas.height = this.settings.height = height || this.settings.height;
 
+  this.render();
   if( $.isFunction( callback )) callback.call( this );
 };
 
